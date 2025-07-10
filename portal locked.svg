@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <circle cx="250" cy="250" r="175" fill="#7722dd" stroke="#8a2be2" stroke-width="25" opacity="1" />
+
+  <circle cx="250" cy="250" r="200" fill="none" stroke="#8a2be2" stroke-width="50" opacity="0.5" />
+
+  <circle cx="250" cy="250" r="150" fill="none" stroke="#8a2be2" stroke-width="25" opacity="0.5" />
+
+  <circle cx="250" cy="250" r="100" fill="none" stroke="#8a2be2" stroke-width="25" opacity="0.5" />
+
+  <circle cx="250" cy="250" r="50" fill="none" stroke="#8a2be2" stroke-width="25" opacity="0.5" />
+
+
+  <ellipse cx="160" cy="10" rx="25" ry="15" fill="none" stroke="#890000" stroke-width="10" transform="rotate(45, 10, 10)" />
+  <ellipse cx="200" cy="10" rx="25" ry="15" fill="none" stroke="#990000" stroke-width="10" transform="rotate(45, 10, 10)" />
+  <ellipse cx="240" cy="10" rx="25" ry="15" fill="none" stroke="#a90000" stroke-width="10" transform="rotate(45, 10, 10)" />
+
+  <ellipse cx=" 350" cy="-190" rx="15" ry="25" fill="none" stroke="#890000" stroke-width="10" transform="rotate(45)" />
+  <ellipse cx="350" cy="-150" rx="15" ry="25" fill="none" stroke="#990000" stroke-width="10" transform="rotate(45)" />
+  <ellipse cx="350" cy="-110" rx="15" ry="25" fill="none" stroke="#a90000" stroke-width="10" transform="rotate(45)" />
+
+  <ellipse cx="540" cy="10" rx="25" ry="15" fill="none" stroke="#890000" stroke-width="10" transform="rotate(45, 10, 10)" />
+  <ellipse cx="500" cy="10" rx="25" ry="15" fill="none" stroke="#990000" stroke-width="10" transform="rotate(45, 10, 10)" />
+  <ellipse cx="460" cy="10" rx="25" ry="15" fill="none" stroke="#a90000" stroke-width="10" transform="rotate(45, 10, 10)" />
+
+  <ellipse cx=" 350" cy="190" rx="15" ry="25" fill="none" stroke="#a90000" stroke-width="10" transform="rotate(45)" />
+  <ellipse cx="350" cy="110" rx="15" ry="25" fill="none" stroke="#990000" stroke-width="10" transform="rotate(45)" />
+  <ellipse cx="350" cy="150" rx="15" ry="25" fill="none" stroke="#890000" stroke-width="10" transform="rotate(45)" />
+
+  <circle cx="250" cy="200" r="50" fill="none" stroke="#c90000" stroke-width="25" opacity="1" />
+  <rect x="162.5" y="200" width="175" height="150" fill="#e91010" />
+  <circle cx="250" cy="260" r="10" fill="none" stroke="#c90000" stroke-width="25" opacity="1" />
+  <rect x="235" y="260" width="30" height="50" fill="#c90000" />
+</svg>

@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quantum Odyssey</title>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Boogaloo&display=swap');
+</style>
+<style>
+    body {
+        margin: 0%;
+        overflow: hidden;
+        user-select: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #orbPic {
+        position: fixed;
+        left: 0%;
+        top: 0%;
+        font-size: 5vw;
+    }
+
+    #orbs {
+        color: purple;
+        font-size: inherit;
+        font-family: 'Boogaloo', sans-serif;
+    }
+
+    #portal {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        display: none;
+    
+        user-select: none;
+    }
+
+
+    #key {
+        position: absolute;
+        width: 150px;
+        height: 150px;
+        display: none;
+        user-select: none;
+    }
+
+    #levelDone {
+        width: 40%;
+        aspect-ratio: 1 / 1;
+        position: absolute;
+        border-radius: 25px;
+        box-shadow: 10px 10px 50px rgba(15, 0, 25, 0.25);
+        background-color: black;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+    }
+
+    .levelDoneButton {
+        margin-top: 60%;
+        width: 30%;
+        aspect-ratio: 2 / 0.8;
+        margin-left: 50%;
+        position: absolute;
+        font-size: 3vw;
+        border-radius: 25px;
+        box-shadow: 0px 0px 10px;
+        background-color: purple;
+        border-width: 0px;
+    }
+
+    .levelDoneButtonBack {
+        margin-top: 60%;
+        width: 30%;
+        aspect-ratio: 2 / 0.8;
+        margin-left: -50%;
+        position: absolute;
+        font-size: 3vw;
+        border-radius: 25px;
+        border-width: 0px;
+        box-shadow: 0px 0px 40px rgba(15, 0, 25, 0.5);
+        background-color: purple;
+    }
+
+    .levelDoneButtonRld {
+        margin-top: 85%;
+        width: 30%;
+        aspect-ratio: 2 / 0.8;
+        position: absolute;
+        font-size: 3vw;
+        border-radius: 25px;
+        border-width: 0px;
+        box-shadow: 0px 0px 40px rgba(15, 0, 25, 0.5);
+        background-color: purple;
+    }
+    .levelDoneButton,
+    .levelDoneButtonRld,
+    .levelDoneButtonBack {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .levelDoneButton:hover:not(:active),
+    .levelDoneButtonRld:hover:not(:active),
+    .levelDoneButtonBack:hover:not(:active) {
+        transform: scale(1.1);
+        box-shadow: 0px 0px 20px rgba(15, 0, 25, 0.8);
+    }
+
+    .levelDoneButton:active,
+    .levelDoneButtonRld:active,
+    .levelDoneButtonBack:active {
+        transform: scale(0.9);
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+    #Player {
+        left: 10%;
+        position: absolute;
+        transform: rotate(-30deg);
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+    #portalPic {
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+    h1 {
+        position: absolute;
+        right: 2%;
+        top: -5%;
+        font-size: 60px;
+        transition: font-size ease 0.5s, right ease 0.5s, top ease 0.5s, color ease 0.5s;
+    }
+    h1:hover {
+        font-size: 70px;
+        right: 1.75%;
+        top: -5.75%;
+        color: gray;
+    }
+    #Goal,#arrow{
+        position: absolute;
+        margin-left: -57%;
+        margin-top:  -10%;
+        display: block;
+        font-size: 2vw;
+        font-family: Arial;
+        color: #aa3388;
+    }
+    #arrow {
+        margin-left: 102%;
+        margin-top: -12%;
+        font-size: 2vw;
+        font-family: Arial;
+        color: #aa3388;
+    }
+
+    #keyPic {
+        position: absolute;
+        left: 73%;
+        top: 10%;
+        transform: rotate(300deg) scaleY(1);
+        -webkit-user-drag: none;
+        user-select: none;
+    }
+
+    #wall {
+        position: absolute;
+        left: 30%;
+        transform: rotate(-30deg);
+        top: 5%;
+        width: 10%;
+        height: 90%;
+        background-color: #3333ff;
+    }
+
+    #floor {
+        position: absolute;
+        left: 5%;
+        transform: rotate(-30deg);
+        top: 65%;
+        width: 40%;
+        height: 10%;
+        background-color: #8B4513;
+    }
+    #options {
+        width: 30%;
+        aspect-ratio: 0.75 / 1;
+        position: absolute;
+        border-radius: 25px;
+        box-shadow: 10px 10px 50px rgba(15, 0, 25, 0.25);
+        background-color: #000000aa;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        user-select: none;
+    }
+
+    #optionsName {
+        font-family: Arial;
+        color: purple;
+        position: absolute;
+        top: -10%;
+        font-weight: 900;
+        font-size: 4vw;
+    }
+
+    label {
+        font-size: 2vw;
+        color: #5000cc;
+        font-weight: 800;
+        margin-top: 50%;
+    }
+
+    input[type="range"] {
+        font-size: 5vw;
+        position: fixed;
+        width: 5%;
+        bottom: 28%;
+        border-radius: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #2c2c2c;
+        color: #ffffff;
+        border: 2px solid var(--blue);
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 40px;
+        height: 40px;
+        background: var(--blue);
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        animation: pulse 1s infinite;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 40px;
+        height: 40px;
+        background: var(--blue);
+        cursor: pointer;
+        border-radius: 50%;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        animation: pulse 1s infinite;
+    }
+
+
+    .slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 100%;
+        height: 25px;
+        background: #2c2c2c;
+        outline: none;
+        opacity: 0.7;
+        transition: opacity .2s;
+        margin-bottom: -1%;
+        border-radius: 50%;
+        border: 2px solid #04AA6D;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+
+    .slider::-webkit-progress-inner-element {
+        background: var(--blue);
+    }
+
+    :root {
+        --blue: white
+    }
+
+
+    #darkMode {
+        font-size: 5vw;
+        position: fixed;
+        width: 5%;
+        bottom: 28%;
+        border-radius: 25px;
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: #2c2c2c;
+        color: #ffffff;
+        border: 2px solid var(--blue);
+        padding: 10px;
+        margin-top: 10px;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    #darkMode:hover:not(:active) {
+        box-shadow: 0px 0px 20px rgba(15, 0, 25, 0.8);
+    }
+
+    #darkMode:active {
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+    /* Confirm Button */
+    #Confirm {
+        background-color: transparent;
+        border-style: none;
+        position: absolute;
+        bottom: 21%;
+        border-color: transparent;
+        width: 7%;
+        right: 27%;
+        aspect-ratio: 1 / 1;
+        border-radius: 25px;
+        display: none;
+        font-size: 2vw;
+        font-family: 'Boogaloo', sans-serif;
+        color: black;
+        font-weight: 1000;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out;
+    }
+
+    #Confirm:hover:not(:active) {
+        transform: scale(1.2);
+        color: #2c2c2c;
+    }
+
+    #Confirm:active {
+        transform: scale(0.9);
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+    #Close {
+        background-color: #AA046D;
+        border-style: none;
+        position: absolute;
+        bottom: 5%;
+        border-color: transparent;
+        width: 30%;
+        height: 10%;
+        border-radius: 25px;
+        font-size: 2vw;
+        font-family: 'Boogaloo', sans-serif;
+        color: black;
+        font-weight: 1000;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    #Close:hover:not(:active) {
+        transform: scale(1.1);
+        color: #2c2c2c;
+        background-color: #BA147D;
+        box-shadow: 0px 0px 20px rgba(15, 0, 25, 0.8);
+    }
+
+    #Close:active {
+        transform: scale(0.9);
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+
+    #Skip {
+        background-color: #046DAA;
+        border-style: none;
+        position: absolute;
+        top: 45%;
+        border-color: transparent;
+        width: 30%;
+        height: 10%;
+        border-radius: 25px;
+        font-size: 2vw;
+        font-family: 'Boogaloo', sans-serif;
+        color: black;
+        font-weight: 1000;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    #Skip:hover:not(:active) {
+        transform: scale(1.1);
+        color: #2c2c2c;
+        background-color: #147DBA;
+        box-shadow: 0px 0px 20px rgba(15, 0, 25, 0.8);
+    }
+
+    #Skip:active {
+        transform: scale(0.9);
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+    #Back {
+        background-color: #9A6DAA;
+        border-style: none;
+        position: absolute;
+        top: 25%;
+        border-color: transparent;
+        width: 30%;
+        height: 10%;
+        border-radius: 25px;
+        font-size: 2vw;
+        font-family: 'Boogaloo', sans-serif;
+        color: black;
+        font-weight: 1000;
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    }
+
+    #Back:hover:not(:active) {
+        transform: scale(1.1);
+        color: #2c2c2c;
+        background-color: #AA7DBA;
+        box-shadow: 0px 0px 20px rgba(15, 0, 25, 0.8);
+    }
+
+    #Back:active {
+        transform: scale(0.9);
+        box-shadow: 0px 0px 10px rgba(15, 0, 25, 0.5);
+    }
+
+    h6 {
+        position: absolute;
+        right: 2%;
+        top: 0%;
+        font-size: 3vw;
+        transform: rotate(0deg);
+        text-align: center;
+        height: fit-content;
+        width: fit-content;
+        transition:transform ease 0.5s, color ease 0.5s;
+    }
+
+    h6:hover {
+        transform: scale(1.1);
+        color: gray;
+    }
+
+    @keyframes turn {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+    }
+    .turn {
+        animation: turn 0.5s infinite;
+    }
+</style>
+
+<body oncontextmenu="return false">
+    <canvas id="canvas"></canvas>
+    <div id="levelDone">
+        <img id="portalPic" src="portal locked.svg">
+        <div id="floor"></div>
+        <div id="wall"></div>
+        <img id="Player" src="Player.svg">
+        <img id="keyPic" src="pKey.svg">
+        <button class="levelDoneButton" onclick="window.location.assign('level5.html')" >Next ➡</button>
+        <button class="levelDoneButtonBack" onclick="window.location.assign('levelSelect.html')">⬅ Back</button>
+        <button class="levelDoneButtonRld" onclick="window.location.reload()">Retry</button>
+    </div>
+    <div id="options">
+        <h5 id="optionsName">Options</h5>
+        <button id="Back" onclick="window.location.assign('levelSelect.html')">Back</button>
+        <button id="Skip" onclick="window.location.assign('index5.html')">Skip</button>
+        <label for="darkMode" id="label">Light Mode</label>
+        <br>
+        <input type="range" name="darkMode" id="darkMode" min="0" max="1" value="0" class="slider" onchange="slider()"
+            id="darkMode" onmousemove="slider()">
+        <button id="Confirm" onclick="confirmChanges()">✓</button>
+        <button id="Close" onclick="document.getElementById('options').style.display = 'none'">Close</button>
+    </div>
+    <h1 onclick="window.location.reload()">↻</h1>
+    <h6 onclick="openOptions()" id="openOpts">⛭</h6>
+    <span id="orbPic">🟣<span id="orbs">0</span></span>
+    <img id="portal" src="portal.svg" alt="Portal">
+    <img id="key" src="pKey.svg" alt="Key">
+    <audio id="backgroundAudio" loop autoplay preload hidden>
+        <source src="Main Theme Add Synth.mp3">
+    </audio>
+    <script src="script3.js"></script>
+</body>
+
+</html>
