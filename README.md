@@ -6,5 +6,5 @@ This project is structured for simplicity and ease of modification, making it a 
 
 ## Credits
 
-Developed by [Matthew Gentle].
+Developed by Matthew Gentle.
 All assets are custom-made SVGs included within the project.
