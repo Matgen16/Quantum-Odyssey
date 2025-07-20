@@ -4,6 +4,18 @@ Quantum Odyssey is a browser-based platformer game built entirely with HTML, CSS
 
 This project is structured for simplicity and ease of modification, making it a good foundation for experimenting with platformer mechanics, level design, and browser-based game development. All game logic and levels are contained within standard HTML and JavaScript files without any external frameworks or libraries.
 
+## Compiling on Windows
+
+If you'd like to compile the C++ file for yourself,
+
+> [!IMPORTANT]
+> You will need to have installed [raylib](https://www.raylib.com/index.html/) and [mingw](https://www.mingw-w64.org/).
+
+First, you need clone the repository using 
+```
+git clone https://github.com/Matgen16/Quantum-Odyssey.git
+``` 
+
 ## Credits
 
 Developed by Matthew Gentle.
