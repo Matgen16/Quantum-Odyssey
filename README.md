@@ -11,7 +11,7 @@ You can either download the exe and run it yourself or you can compile it yourse
 ## Compiling on Windows
 
 > [!IMPORTANT]
-> If you want to compile it for yourself you will need to have installed [raylib](https://www.raylib.com/index.html/),  [mingw](https://www.mingw-w64.org/), and [git](https://git-scm.com/).
+> If you want to compile it for yourself you will need to have installed [raylib](https://www.raylib.com/),  [mingw](https://www.mingw-w64.org/), and [git](https://git-scm.com/).
 
 First, you need clone the repository and cd into it using 
 ```
