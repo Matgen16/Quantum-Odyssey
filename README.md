@@ -6,7 +6,7 @@ This project is structured for simplicity and ease of modification, making it a 
 
 ## Running the Program
 
-You can either download the exe and run it yourself or you can compile it yourself.
+You can either download the exe and run it or you can compile it yourself.
 
 ## Compiling on Windows
 
@@ -24,8 +24,6 @@ Then run
 g++ main.cpp -o Quantum-Odyssey.exe -lraylib -lopengl32 -lgdi32 -lwinmm -mwindows
 ```
 to compile it.
-
-Now you can run the file and enjoy.
 
 ## Credits
 
