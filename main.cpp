@@ -32,7 +32,7 @@ struct Level
     vector<LevelData> levelData;
 };
 
-Level Levels[4] = {
+Level Levels[5] = {
     {"Level 1",
      {
          {"orbs", {1}},
@@ -61,6 +61,18 @@ Level Levels[4] = {
          {"key", {0}},
          {"wall", {static_cast<int>(virtualWidth / 2 - 50), static_cast<int>(virtualHeight / 2), 50, static_cast<int>(virtualHeight / 2 - 100)}},
          {"Qwall", {static_cast<int>(virtualWidth / 2 - 100), 0, 50, static_cast<int>(virtualHeight - 100)}},
+     }},
+    {"Level 5",
+     {
+         {"orbs", {1}},
+         {"numberWalls", {2, 4}},
+         {"key", {0}},
+         {"wall", {static_cast<int>(virtualWidth / 2 - 300), static_cast<int>(virtualHeight / 2), static_cast<int>(virtualWidth / 2 + 250), 25}},
+         {"wall", {static_cast<int>(virtualWidth / 2 - 200), static_cast<int>(virtualHeight / 2 + 22), 25, static_cast<int>(virtualWidth /2 - 400)}},
+         {"Qwall", {static_cast<int>(virtualWidth / 2 - 200), 0, 50, static_cast<int>(virtualHeight - 100)}},
+         {"Qwall", {0, 0, static_cast<int>(virtualWidth/2 - 300), static_cast<int>(virtualHeight - 100)}},
+         {"Qwall", {static_cast<int>(virtualWidth/2 - 300), 0, 100, static_cast<int>(virtualHeight / 2 - 100)}},
+         {"Qwall", {static_cast<int>(virtualWidth/2 - 300), static_cast<int>(virtualHeight-175), 100, 75}},
      }},
 };
 
@@ -261,6 +273,29 @@ int main()
                 if (QS)
                 {
                     orbs--;
+                    // When entering QS, if player is inside a Qwall, push them out
+                    int numberWalls = Levels[level].levelData[1].data[0];
+                    int numberQWalls = Levels[level].levelData[1].data[1];
+                    for (int i = 3 + numberWalls; i < 3 + numberWalls + numberQWalls; i++)
+                    {
+                        Rectangle qwall = {(float)Levels[level].levelData[i].data[0], (float)Levels[level].levelData[i].data[1], (float)Levels[level].levelData[i].data[2], (float)Levels[level].levelData[i].data[3]};
+                        if (CheckCollisionRecs(player.rect, qwall))
+                        {
+                            float overlapLeft = (player.rect.x + player.rect.width) - qwall.x;
+                            float overlapRight = (qwall.x + qwall.width) - player.rect.x;
+                            float overlapTop = (player.rect.y + player.rect.height) - qwall.y;
+                            float overlapBottom = (qwall.y + qwall.height) - player.rect.y;
+                            float minOverlap = fmin(fmin(overlapLeft, overlapRight), fmin(overlapTop, overlapBottom));
+                            if (minOverlap == overlapLeft)
+                                player.rect.x = qwall.x - player.rect.width;
+                            else if (minOverlap == overlapRight)
+                                player.rect.x = qwall.x + qwall.width;
+                            else if (minOverlap == overlapTop)
+                                player.rect.y = qwall.y - player.rect.height;
+                            else if (minOverlap == overlapBottom)
+                                player.rect.y = qwall.y + qwall.height;
+                        }
+                    }
                 }
             }
 
@@ -450,23 +485,11 @@ int main()
         {
             DrawTextureEx(keyTexture, (Vector2){(float)Levels[level].levelData[2].data[2], (float)Levels[level].levelData[2].data[3]}, 0.0f, 0.5f, WHITE);
         }
-        DrawText(TextFormat("Orbs: %d", orbs), 10, 60, 24, YELLOW);
         // draw the ground
+
         DrawRectangleRec(ground, DARKGREEN);
-        // draw the wall
+        // draw Qwalls first
         int numberWalls = Levels[level].levelData[1].data[0];
-        for (int i = 3; i < 3 + numberWalls; i++)
-        {
-            Rectangle wall = {(float)Levels[level].levelData[i].data[0], (float)Levels[level].levelData[i].data[1], (float)Levels[level].levelData[i].data[2], (float)Levels[level].levelData[i].data[3]};
-            if (!QS)
-            {
-                DrawRectangleRec(wall, DARKBROWN);
-            }
-            else
-            {
-                DrawRectangleRec(wall, BROWN);
-            }
-        }
         int numberQWalls = Levels[level].levelData[1].data[1];
         for (int i = 3 + numberWalls; i < 3 + numberWalls + numberQWalls; i++)
         {
@@ -478,6 +501,19 @@ int main()
             else
             {
                 DrawRectangleRec(wall, Color{1, 134, 123, 255});
+            }
+        }
+        // draw normal walls after Qwalls
+        for (int i = 3; i < 3 + numberWalls; i++)
+        {
+            Rectangle wall = {(float)Levels[level].levelData[i].data[0], (float)Levels[level].levelData[i].data[1], (float)Levels[level].levelData[i].data[2], (float)Levels[level].levelData[i].data[3]};
+            if (!QS)
+            {
+                DrawRectangleRec(wall, DARKBROWN);
+            }
+            else
+            {
+                DrawRectangleRec(wall, BROWN);
             }
         }
 
@@ -511,6 +547,7 @@ int main()
                           player.rect.width / 2, (player.rect.height - 10) / 4, Color{238, 85, 34, 255});
         }
 
+        DrawText(TextFormat("Orbs: %d", orbs), 10, 60, 24, DARKBROWN);
         // Drawing the top bar
         DrawRectangle(0, 0, screenWidth, 50, DARKBLUE);
         if (paused)
